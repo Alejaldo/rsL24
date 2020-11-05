@@ -37,6 +37,21 @@ post '/visit' do
 
 	if @username == ''
 		@error = 'Enter the Name'
+	end
+
+	if @phone == ''
+		@error = 'Enter the Phone'
+	end
+
+	if @date == ''
+		@error = 'Wrong date format'
+	end
+
+	if @time == ''
+		@error = 'Wrong time format'
+	end
+
+	if @error != ''
 		return erb :visit
 	end
 
