@@ -8,6 +8,7 @@ get '/' do
 end
 
 get '/about' do 
+	@error = 'something wrong epta'
 	erb :about
 end
 
@@ -33,6 +34,11 @@ post '/visit' do
 	guestlist = File.open './public/guestlist.txt', 'a'
 	guestlist.write "Guest #{@username} (phone: #{@phone}) has made appointment on #{@date} at #{@time} with Mr. #{@fcker} and #{@color} color \n"
 	guestlist.close
+
+	if @username == ''
+		@error = 'Enter the Name'
+		return erb :visit
+	end
 
 	erb :contacts
 end
