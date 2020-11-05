@@ -42,11 +42,16 @@ post '/visit' do
 		:time => 'Enter correct time'
 	}
 
-	hh.each do |k, v|
-		if params[k] == ''
-			@error = hh[k]
-			return erb :visit
-		end
+	#hh.each do |k, v|
+	#	if params[k] == ''
+	#		@error = hh[k]
+	#		return erb :visit
+	#	end
+	#end
+	
+	@error = hh.select { |k,_| params[k] == '' }.values.join(", ")
+	if @error != ''
+		return erb :visit
 	end
 
 	erb :contacts
