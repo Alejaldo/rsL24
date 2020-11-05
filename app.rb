@@ -35,24 +35,18 @@ post '/visit' do
 	guestlist.write "Guest #{@username} (phone: #{@phone}) has made appointment on #{@date} at #{@time} with Mr. #{@fcker} and #{@color} color \n"
 	guestlist.close
 
-	if @username == ''
-		@error = 'Enter the Name'
-	end
+	hh = {
+		:username => 'Enter correct name',
+		:phone => 'Enter correct phone',
+		:date => 'Enter correct date',
+		:time => 'Enter correct time'
+	}
 
-	if @phone == ''
-		@error = 'Enter the Phone'
-	end
-
-	if @date == ''
-		@error = 'Wrong date format'
-	end
-
-	if @time == ''
-		@error = 'Wrong time format'
-	end
-
-	if @error != ''
-		return erb :visit
+	hh.each do |k, v|
+		if params[k] == ''
+			@error = hh[k]
+			return erb :visit
+		end
 	end
 
 	erb :contacts
