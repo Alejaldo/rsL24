@@ -2,6 +2,7 @@
 require 'rubygems'
 require 'sinatra'
 require 'sinatra/reloader'
+require 'pony'
 
 get '/' do
 	erb "Hello! <a href=\"https://github.com/bootstrap-ruby/sinatra-bootstrap\">Original</a> pattern has been modified for <a href=\"http://rubyschool.us/\">Ruby School</a>"			
@@ -14,10 +15,6 @@ end
 
 get '/visit' do
 	erb :visit
-end
-
-get '/contacts' do
-	erb :contacts
 end
 
 post '/visit' do
@@ -54,7 +51,7 @@ post '/visit' do
 		return erb :visit
 	end
 
-	erb :contacts
+	erb :message
 end
 
 get '/admin' do
@@ -73,4 +70,34 @@ post '/admin' do
         @warning = '<p>Wrong login or password!</p>'
         erb :admin
     end
+end
+
+get '/contacts' do
+	erb :contacts
+end
+
+post '/contacts' do
+	@name = params[:name]
+	@mail = params[:mail]
+	@body = params[:body]
+
+	Pony.options = {
+		:subject => "Message from #{@name}",
+		:body => "#{@body}",
+		:via => :smtp,
+		:via_options => { 
+			:address              => 'smtp.gmail.com', 
+			:port                 => '587', 
+			:enable_starttls_auto => true, 
+			:user_name            => '__@gmail.com',
+    		:password             => '__',
+			:authentication       => :plain,
+		}
+	}
+	
+	Pony.mail(:to => '__@__')
+
+	@obana = "Hey #{@name} your message has succesfully been sent to us!"
+
+	erb :ura
 end
